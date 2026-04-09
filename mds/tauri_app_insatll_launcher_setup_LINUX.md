@@ -2,79 +2,31 @@
 
 ## Goal
 Run your Tauri app like a normal desktop app:
+
 - Press **Super (Windows key)**
-- Search app name
+- Search your app name
 - Launch it
 
 ---
 
-## 1. Build Release
+## Config (EDIT THIS)
 
 ```bash
-cargo tauri build
-```
-
-Output location:
-
-```
-src-tauri/target/release/bundle/
+APP_NAME="DisciplineOS"
+APP_ID="com.nikola.disciplineos"
+BUNDLE_DIR="src-tauri/target/release/bundle/deb"
+DEB_PATTERN="*.deb"
 ```
 
 ---
 
-## 2. Install the App (.deb)
-
-Go to the `.deb` folder:
-
-```bash
-cd src-tauri/target/release/bundle/deb
-```
-
-Install:
-
-```bash
-sudo dpkg -i "Discipline OS_0.1.0_amd64.deb"
-```
-
-If dependency errors appear:
-
-```bash
-sudo apt -f install
-```
-
----
-
-## 3. Launch the App
-
-- Press **Super (Windows key)**
-- Type: `Discipline`
-- Launch the app
-
----
-
-## 4. If App Does NOT Appear
-
-Run:
-
-```bash
-update-desktop-database ~/.local/share/applications
-```
-
-Or:
-- Log out
-- Log back in
-
----
-
-## 5. Fix App Name (IMPORTANT)
+## 1. Set App Name (IMPORTANT)
 
 Edit:
 
 ```
 src-tauri/tauri.conf.json
 ```
-
-Set clean name (no spaces preferred):
 
 ```json
 {
@@ -83,60 +35,127 @@ Set clean name (no spaces preferred):
 }
 ```
 
-Rebuild:
+**Rules:**
+- No spaces preferred
+- Keep name stable
+- Use reverse-domain identifier
+
+---
+
+## 2. Build Release
 
 ```bash
 cargo tauri build
 ```
 
-Reinstall `.deb`.
-
 ---
 
-## 6. Verify Launcher Installed
+## 3. Install App
 
 ```bash
-find /usr/share/applications -iname "*discipline*"
+cd $BUNDLE_DIR
+sudo dpkg -i $DEB_PATTERN || sudo apt -f install -y
 ```
 
 ---
 
-## 7. (Optional) Manual Launcher
+## 4. Launch
 
-If needed, create:
+- Press **Super**
+- Type: `DisciplineOS`
+- Open app
+
+---
+
+## 5. If App Not Visible
 
 ```bash
-~/.local/share/applications/discipline.desktop
+update-desktop-database ~/.local/share/applications 2>/dev/null || true
+sudo update-desktop-database /usr/share/applications 2>/dev/null || true
 ```
 
-Example:
+Optional:
+
+```bash
+gtk-update-icon-cache ~/.local/share/icons/hicolor 2>/dev/null || true
+sudo gtk-update-icon-cache /usr/share/icons/hicolor 2>/dev/null || true
+```
+
+If still missing:
+- Log out / log in
+- Or reboot
+
+---
+
+## 6. Verify Launcher
+
+```bash
+find /usr/share/applications ~/.local/share/applications -iname "*discipline*" 2>/dev/null
+```
+
+---
+
+## 7. Manual Launcher (Fallback)
+
+```bash
+mkdir -p ~/.local/share/applications
+nano ~/.local/share/applications/${APP_NAME,,}.desktop
+```
 
 ```ini
 [Desktop Entry]
 Type=Application
+Version=1.0
 Name=DisciplineOS
-Exec=/path/to/your/app
-Icon=discipline
+Exec=/absolute/path/to/app
+Icon=disciplineos
 Terminal=false
 Categories=Utility;
+StartupNotify=true
+```
+
+```bash
+chmod +x ~/.local/share/applications/${APP_NAME,,}.desktop
+update-desktop-database ~/.local/share/applications
+```
+
+---
+
+## 8. Generic Install Script
+
+```bash
+#!/usr/bin/env bash
+set -e
+
+APP_NAME="DisciplineOS"
+BUNDLE_DIR="src-tauri/target/release/bundle/deb"
+DEB_PATTERN="*.deb"
+
+cargo tauri build
+
+cd "$BUNDLE_DIR"
+sudo dpkg -i $DEB_PATTERN || sudo apt -f install -y
+
+echo "Installed $APP_NAME"
+echo "Press Super and search for: $APP_NAME"
 ```
 
 ---
 
 ## Notes
 
+- `.deb` = proper system install
 - `.AppImage` = portable (no install)
-- `.deb` = proper system install (recommended)
-- Launcher visibility depends on `.desktop` file
+- Launcher depends on `.desktop` file + cache refresh
 
 ---
 
-## TLDR
+## TL;DR
 
 ```bash
 cargo tauri build
-cd bundle/deb
-sudo dpkg -i *.deb
+cd src-tauri/target/release/bundle/deb
+sudo dpkg -i *.deb || sudo apt -f install -y
 ```
 
 → Press Super → search app → run
