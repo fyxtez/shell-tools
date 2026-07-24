@@ -4,9 +4,11 @@ set -euo pipefail
 
 CURRENT_DIR="$(pwd)"
 FOLDER_NAME="$(basename "$CURRENT_DIR")"
-TIMESTAMP="$(date '+%Y-%m-%d_%H-%M-%S')"
-ZIP_NAME="${FOLDER_NAME}_${TIMESTAMP}.zip"
+ZIP_NAME="${FOLDER_NAME}.zip"
 ZIP_PATH="${CURRENT_DIR}/${ZIP_NAME}"
+
+# Remove existing archive so we always create a fresh one.
+rm -f "$ZIP_PATH"
 
 echo "Creating: $ZIP_PATH"
 
