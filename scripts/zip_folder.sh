@@ -21,7 +21,6 @@ zip -r "$ZIP_PATH" "$FOLDER_NAME" \
     "*/build/*" \
     "*/.git/*" \
     "*/.idea/*" \
-    "*/.vscode/*" \
     "*/.next/*" \
     "*/.cache/*" \
     "*/coverage/*" \
@@ -29,7 +28,16 @@ zip -r "$ZIP_PATH" "$FOLDER_NAME" \
     "*/temp/*" \
     "*/.env" \
     "*/.env.*" \
+    "*/zip.sh" \
+    "*/LICENCE" \
+    "*/LICENSE" \
+    "*/SECURITY" \
     "*.zip" \
+    "*.db" \
+    "*.db-shm" \
+    "*.db-wal" \
+    "*.sqlite" \
+    "*.sqlite3" \
     "*.log" \
     "*/.DS_Store"
 
