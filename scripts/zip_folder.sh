@@ -26,6 +26,7 @@ zip -r "$ZIP_PATH" "$FOLDER_NAME" \
     "*/coverage/*" \
     "*/tmp/*" \
     "*/temp/*" \
+    "*/src-tauri/gen/*" \
     "*/.env" \
     "*/.env.*" \
     "*/zip.sh" \
