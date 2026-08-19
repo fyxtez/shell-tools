@@ -29,6 +29,9 @@ zip -r "$ZIP_PATH" "$FOLDER_NAME" \
     "*/src-tauri/gen/*" \
     "*/.env" \
     "*/.env.*" \
+    "*/keystore.properties" \
+    "*.jks" \
+    "*.keystore" \
     "*/zip.sh" \
     "*/LICENCE" \
     "*/LICENSE" \
