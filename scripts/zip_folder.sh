@@ -43,7 +43,20 @@ zip -r "$ZIP_PATH" "$FOLDER_NAME" \
     "*.sqlite" \
     "*.sqlite3" \
     "*.log" \
-    "*/.DS_Store"
+    "*/.DS_Store" \
+    "*.png" \
+    "*.jpg" \
+    "*.jpeg" \
+    "*.gif" \
+    "*.webp" \
+    "*.bmp" \
+    "*.tif" \
+    "*.tiff" \
+    "*.ico" \
+    "*.svg" \
+    "*.avif" \
+    "*.heic" \
+    "*.heif"
 
 echo
 echo "Archive created successfully:"
